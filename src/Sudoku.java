@@ -154,7 +154,17 @@ public class Sudoku {
 
     // Driver
     public static void main(String[] args) {
-        int N = 9, K = 20;
+        //Setting variables for Sudoku board
+        int N = 9, K = 0;
+        PreGUI setPanel = new PreGUI();
+        String diff = setPanel.displayGUI();
+        switch (diff) {
+            case "Easy" -> K = 15;
+            case "Medium" -> K = 30;
+            case "Hard" -> K = 40;
+        }
+
+        //Initializing Sudoku board
         Sudoku sudoku = new Sudoku(N, K);
         sudoku.fillBoardDiag();
         sudoku.fillRemaining(0, sudoku.SRN);
