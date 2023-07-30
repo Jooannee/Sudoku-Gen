@@ -46,7 +46,7 @@ public class SudokuGUI {
                 corrFrame.setSize(500, 500);
                 corrFrame.setLayout(new BorderLayout());
 
-
+                printSudoku(corrBoard);
 
                 // Create a label to display the timer
                 timerLabel = new JLabel("", SwingConstants.CENTER);
@@ -248,4 +248,13 @@ public class SudokuGUI {
         return (allowedRow(r, num) && allowedCol(c, num) && allowedBox(r-r%SRN, c-c%SRN, num));
     }
 
+        public static void printSudoku(int[][] bboard) {
+                for (int i = 0; i<9; i++)
+                {
+                        for (int j = 0; j<9; j++)
+                                System.out.print(bboard[i][j] + " ");
+                        System.out.println();
+                }
+                System.out.println();
+        }
        }

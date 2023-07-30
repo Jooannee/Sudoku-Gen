@@ -135,11 +135,11 @@ public class Sudoku {
     }
 
     //Method to finally print the sudoku, a standard 2D array printing method
-    public void printSudoku() {
-        for (int i = 0; i<N; i++)
+    public static void printSudoku(int[][] bboard) {
+        for (int i = 0; i<9; i++)
         {
-            for (int j = 0; j<N; j++)
-                System.out.print(board[i][j] + " ");
+            for (int j = 0; j<9; j++)
+                System.out.print(bboard[i][j] + " ");
             System.out.println();
         }
         System.out.println();
@@ -151,13 +151,18 @@ public class Sudoku {
         Sudoku sudoku = new Sudoku(N, K);
         sudoku.fillBoardDiag();
         sudoku.fillRemaining(0, sudoku.SRN);
-        int[][] corrBoard = sudoku.board; // Get the fully solved board
+
+        int[][] corrBoard = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                corrBoard[i][j] = sudoku.board[i][j];
+            }
+        }
         sudoku.removeDigits();
-        int[][] playerBoard = sudoku.board;
 
         // Display the Sudoku board using GUI
         SwingUtilities.invokeLater(() -> {
-            SudokuGUI sudokuGUI = new SudokuGUI(playerBoard, corrBoard);
+            SudokuGUI sudokuGUI = new SudokuGUI(sudoku.board, corrBoard);
             sudokuGUI.displayGUI();
         });
     }
