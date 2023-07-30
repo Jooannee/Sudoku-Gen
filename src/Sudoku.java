@@ -77,49 +77,42 @@ public class Sudoku {
             fillBox(i, i);
         }
     }
-    //Filling the rest of the board
-    boolean fillRemaining(int r, int c) {
-        //  System.out.println(i+" "+j);
-        if (c>=N && r<N-1)
-        {
-            r = r + 1;
-            c = 0;
-        }
-        if (r>=N && c>=N)
+
+
+    // Method to fill the remaining cells using backtracking
+    public boolean fillRemaining(int i, int j) {
+        // Base case: If we reach the end of the board, return true
+        if (i == N - 1 && j == N) {
             return true;
+        }
 
-        if (r < SRN)
-        {
-            if (c < SRN)
-                c = SRN;
+        // Move to the next row if we reach the end of the current row
+        if (j == N) {
+            i++;
+            j = 0;
         }
-        else if (r < N-SRN)
-        {
-            if (c==(int)(r/SRN)*SRN)
-                c =  c + SRN;
+
+        // Skip the cells that are already filled
+        if (board[i][j] != 0) {
+            return fillRemaining(i, j + 1);
         }
-        else
-        {
-            if (c == N-SRN)
-            {
-                r = r + 1;
-                c = 0;
-                if (r>=N)
+
+        // Try different numbers in the current cell
+        for (int num = 1; num <= N; num++) {
+            if (numAllowed(i, j, num)) {
+                board[i][j] = num;
+
+                // Move to the next cell
+                if (fillRemaining(i, j + 1)) {
                     return true;
+                }
+
+                // Backtrack and try the next number
+                board[i][j] = 0;
             }
         }
 
-        for (int num = 1; num<=N; num++)
-        {
-            if (numAllowed(r, c, num))
-            {
-                board[r][c] = num;
-                if (fillRemaining(r, c+1))
-                    return true;
-
-                board[r][c] = 0;
-            }
-        }
+        // No valid number found for the current cell, backtrack
         return false;
     }
 
@@ -158,11 +151,13 @@ public class Sudoku {
         Sudoku sudoku = new Sudoku(N, K);
         sudoku.fillBoardDiag();
         sudoku.fillRemaining(0, sudoku.SRN);
+        int[][] corrBoard = sudoku.board; // Get the fully solved board
         sudoku.removeDigits();
+        int[][] playerBoard = sudoku.board;
 
         // Display the Sudoku board using GUI
         SwingUtilities.invokeLater(() -> {
-            SudokuGUI sudokuGUI = new SudokuGUI(sudoku.board);
+            SudokuGUI sudokuGUI = new SudokuGUI(playerBoard, corrBoard);
             sudokuGUI.displayGUI();
         });
     }

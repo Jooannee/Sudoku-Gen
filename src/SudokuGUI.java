@@ -1,59 +1,74 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.awt.Point;
-import java.util.ArrayList;
+
 
 
 public class SudokuGUI {
         private int[][] board;
+        private int[][] corrBoard;
         private int N;
         private int SRN;
-        private JFrame frame; // Declare frame as a member variable
+        private JFrame mainFrame;
+        private JFrame corrFrame;
         private Timer timer;
-        private long elapsedTime; // Timer variable to store elapsed time in milliseconds
-        private JLabel timerLabel; // Label to display the timer
+        private long elapsedTime;
+        private JLabel timerLabel;
         private JLabel[][] cellLabels;
+        private JLabel[][] corrCellLabels;
 
         // Constructor
-        SudokuGUI(int[][] board) {
+        SudokuGUI(int[][] board, int[][] corrBoard) {
                 this.board = board;
+                this.corrBoard = corrBoard;
                 this.N = board.length;
                 this.SRN = (int) Math.sqrt(N);
                 this.elapsedTime = 0;
                 cellLabels = new JLabel[N][N];
+                corrCellLabels = new JLabel[N][N];
         }
 
         // Method to create and display the Sudoku board GUI
         public void displayGUI() {
-                frame = new JFrame("Sudoku Board");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(500, 500);
-                frame.setLayout(new BorderLayout());
+                mainFrame = new JFrame("Sudoku Board");
+                mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                mainFrame.setSize(500, 500);
+                mainFrame.setLayout(new BorderLayout());
+
+                corrFrame = new JFrame("Answer Board");
+                corrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                corrFrame.setSize(500, 500);
+                corrFrame.setLayout(new BorderLayout());
+
+
 
                 // Create a label to display the timer
                 timerLabel = new JLabel("", SwingConstants.CENTER);
                 timerLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-                frame.add(timerLabel, BorderLayout.NORTH);
+                mainFrame.add(timerLabel, BorderLayout.NORTH);
 
-                // Submit button for the player to finish the puzzle.
-                JButton subButton = new JButton("Submit");
+                // Button for the player to finish/submit the puzzle.
+                JButton subButton = new JButton("Finish");
                 subButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                                 stopTimer();
+                                solutionCorrect();
                         }
                 });
-                frame.add(subButton, BorderLayout.SOUTH);
+                mainFrame.add(subButton, BorderLayout.SOUTH);
 
                 JPanel boardPanel = new JPanel();
                 boardPanel.setLayout(new GridLayout(N, N));
+
+                JPanel corrBoardPanel = new JPanel();
+                corrBoardPanel.setLayout(new GridLayout(N, N));
 
                 // Create and add JLabels to represent Sudoku cells
                 for (int i = 0; i < N; i++) {
@@ -83,7 +98,23 @@ public class SudokuGUI {
                         }
                 }
 
-                frame.add(boardPanel, BorderLayout.CENTER);
+                // Fill Answer Board
+                for (int i = 0; i < N; i++) {
+                        for (int j = 0; j < N; j++) {
+                                corrCellLabels[i][j] = new JLabel("", SwingConstants.CENTER);
+                                corrCellLabels[i][j].setFont(new Font("Arial", Font.PLAIN, 20));
+
+                                // Add a thicker border to separate 3x3 boxes
+                                int top = 1, left = 1, bottom = 1, right = 1;
+                                if (i % SRN == 0) top = 3;
+                                if (j % SRN == 0) left = 3;
+                                corrCellLabels[i][j].setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
+
+                                corrBoardPanel.add(corrCellLabels[i][j]);
+                        }
+                }
+
+                mainFrame.add(boardPanel, BorderLayout.CENTER);
                 for (int i = 0; i < N; i++) {
                         for (int j = 0; j < N; j++) {
                                 if (board[i][j] != 0) {
@@ -91,7 +122,15 @@ public class SudokuGUI {
                                 }
                         }
                 }
-                frame.setVisible(true);
+
+                corrFrame.add(corrBoardPanel, BorderLayout.CENTER);
+                for (int i = 0; i < N; i++) {
+                        for (int j = 0; j < N; j++) {
+                                        corrCellLabels[i][j].setText(String.valueOf(corrBoard[i][j]));
+
+                        }
+                }
+                mainFrame.setVisible(true);
                 startTimer();
         }
 
@@ -155,24 +194,25 @@ public class SudokuGUI {
         //Methods to check if the player's solution of the board is correct (Copied from Sudoku class)
         public void solutionCorrect() {
             boolean isCorrect = true;
-            ArrayList<Point> incorrectCells = new ArrayList<>(); // Store the coordinates of incorrect cells
-
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (board[i][j] == 0 || !numAllowed(i, j, board[i][j])) {
-                        isCorrect = false;
-                        incorrectCells.add(new Point(i, j));
-                    }
+                for (int i = 0; i < N; i++) {
+                        for (int j = 0; j < N; j++) {
+                                if (!numAllowed(i, j, board[i][j])){
+                                     isCorrect = false;
+                                     break;
+                                }
+                        }
                 }
-            }
 
-            if (isCorrect) {
-                JOptionPane.showMessageDialog(frame, "Congratulations! Sudoku puzzle solved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                if (isCorrect) {
+                JOptionPane.showMessageDialog(mainFrame, "Congratulations! Sudoku puzzle solved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                int retry = JOptionPane.showConfirmDialog(frame, "There are errors in the solution. Would you like to keep trying?", "Error", JOptionPane.YES_NO_OPTION);
+                int retry = JOptionPane.showConfirmDialog(mainFrame, "There are errors in the solution. Would you like to keep trying?", "Error", JOptionPane.YES_NO_OPTION);
                 if (retry == JOptionPane.YES_OPTION) {
                     // Continue trying: Start the timer again and update the board
                     startTimer();
+                }
+                else{
+                        corrFrame.setVisible(true);
                 }
             }
         }
@@ -208,4 +248,4 @@ public class SudokuGUI {
         return (allowedRow(r, num) && allowedCol(c, num) && allowedBox(r-r%SRN, c-c%SRN, num));
     }
 
-}
+       }
