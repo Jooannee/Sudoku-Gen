@@ -194,14 +194,13 @@ public class SudokuGUI {
         //Methods to check if the player's solution of the board is correct (Copied from Sudoku class)
         public void solutionCorrect() {
                 boolean isCorrect = true;
-                ArrayList<Point> incorrectCells = new ArrayList<>(); // Store the coordinates of incorrect cells
 
                 for (int i = 0; i < N; i++) {
                         for (int j = 0; j < N; j++) {
-                                if (board[i][j] == 0 || !numAllowed(i, j, board[i][j])) {
-                                        isCorrect = false;
-                                        incorrectCells.add(new Point(i, j));
-                                }
+                            if (!(board[i][j] == corrBoard[i][j])) {
+                                isCorrect = false;
+                                break;
+                            }
                         }
                 }
 
