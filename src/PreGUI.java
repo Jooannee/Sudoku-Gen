@@ -44,8 +44,4 @@ public class PreGUI {
         frame.dispose();
         return selectedDiff;
     }
-
-    public static void main(String[] args) {
-
-    }
 }
