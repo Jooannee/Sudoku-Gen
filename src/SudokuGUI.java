@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -218,36 +217,6 @@ public class SudokuGUI {
             }
         }
 
-        boolean allowedBox (int r, int c, int num) {
-                for (int i = 0; i < SRN; i++) {
-                        for (int j = 0; j < SRN; j++) {
-                                if(board[i+r][j+c] == num)
-                                {
-                                        return false;
-                                }
-                        }
-                }
-                return true;
-        }
-        boolean allowedRow (int r, int num) {
-                for (int i = 0; i < N; i++) {
-                        if (board[r][i] == num) {
-                                return false;
-                        }
-                }
-                return true;
-        }
-        boolean allowedCol (int c, int num) {
-                for (int i = 0; i < N; i++) {
-                        if (board[i][c] == num) {
-                                return false;
-                        }
-                }
-                return true;
-        }
-        boolean numAllowed (int r, int c, int num) {
-        return (allowedRow(r, num) && allowedCol(c, num) && allowedBox(r-r%SRN, c-c%SRN, num));
-    }
 
         public static void printSudoku(int[][] bboard) {
                 for (int i = 0; i<9; i++)
