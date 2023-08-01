@@ -42,13 +42,24 @@ public class SudokuGUI {
                 mainFrame.setSize(500, 500);
                 mainFrame.setLayout(new BorderLayout());
 
-                // Setting window icon
+                // Setting window icon & Dock icon (If supported)
                 ArrayList<Image> icons = new ArrayList<>();
                 icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
                 icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 64.png"));
                 icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 32.png"));
 
                 mainFrame.setIconImages(icons);
+
+                final Taskbar taskbar = Taskbar.getTaskbar();
+
+                try {
+                        // Set icon for mac os (and other systems which do support this method)
+                        taskbar.setIconImage(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
+                } catch (final UnsupportedOperationException e) {
+                        System.out.println("The os does not support: 'taskbar.setIconImage'");
+                } catch (final SecurityException e) {
+                        System.out.println("There was a security exception for: 'taskbar.setIconImage'");
+                }
 
 
                 corrFrame = new JFrame("Answer Board");
