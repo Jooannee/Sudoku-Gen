@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -16,6 +17,14 @@ public class PreGUI {
         JFrame frame = new JFrame("Settings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 600);
+
+        // Setting window icon
+        ArrayList<Image> icons = new ArrayList<>();
+        icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
+        icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 64.png"));
+        icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 32.png"));
+
+        frame.setIconImages(icons);
 
         // Dropdown menu of difficulties
         JComboBox<String> diffDropdown = new JComboBox<>(difficulties);

@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.ArrayList;
 
 
 
@@ -32,10 +33,6 @@ public class SudokuGUI {
                 this.elapsedTime = 0;
                 cellLabels = new JLabel[N][N];
                 corrCellLabels = new JLabel[N][N];
-
-                // Setting window icon
-                /*Image icon = Toolkit.getDefaultToolkit().getImage();
-                mainFrame.setIconImage(icon);*/
         }
 
         // Method to create and display the Sudoku board GUI
@@ -44,6 +41,15 @@ public class SudokuGUI {
                 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 mainFrame.setSize(500, 500);
                 mainFrame.setLayout(new BorderLayout());
+
+                // Setting window icon
+                ArrayList<Image> icons = new ArrayList<>();
+                icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
+                icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 64.png"));
+                icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 32.png"));
+
+                mainFrame.setIconImages(icons);
+
 
                 corrFrame = new JFrame("Answer Board");
                 corrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
