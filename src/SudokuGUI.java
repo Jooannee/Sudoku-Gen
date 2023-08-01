@@ -24,6 +24,7 @@ public class SudokuGUI {
 
         // Constructor
         SudokuGUI(int[][] board, int[][] corrBoard) {
+                // Setting instance variables
                 this.board = board;
                 this.corrBoard = corrBoard;
                 this.N = board.length;
@@ -31,6 +32,10 @@ public class SudokuGUI {
                 this.elapsedTime = 0;
                 cellLabels = new JLabel[N][N];
                 corrCellLabels = new JLabel[N][N];
+
+                // Setting window icon
+                /*Image icon = Toolkit.getDefaultToolkit().getImage();
+                mainFrame.setIconImage(icon);*/
         }
 
         // Method to create and display the Sudoku board GUI
