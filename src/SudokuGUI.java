@@ -25,7 +25,6 @@ public class SudokuGUI {
 
         // Constructor
         SudokuGUI(int[][] board, int[][] corrBoard) {
-                // Setting instance variables
                 this.board = board;
                 this.corrBoard = corrBoard;
                 this.N = board.length;
@@ -37,23 +36,34 @@ public class SudokuGUI {
 
         // Method to create and display the Sudoku board GUI
         public void displayGUI() {
+                // Setting up player window
                 mainFrame = new JFrame("Sudoku Board");
                 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 mainFrame.setSize(500, 500);
                 mainFrame.setLayout(new BorderLayout());
+
+                JPanel boardPanel = new JPanel();
+                boardPanel.setLayout(new GridLayout(N, N));
+
+                // Setting up answer window
+                corrFrame = new JFrame("Answer Board");
+                corrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                corrFrame.setSize(500, 500);
+                corrFrame.setLayout(new BorderLayout());
+
+                JPanel corrBoardPanel = new JPanel();
+                corrBoardPanel.setLayout(new GridLayout(N, N));
 
                 // Setting window icon & Dock icon (If supported)
                 ArrayList<Image> icons = new ArrayList<>();
                 icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
                 icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 64.png"));
                 icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 32.png"));
-
                 mainFrame.setIconImages(icons);
 
+                // Setting taskbar Icon for OS which support it
                 final Taskbar taskbar = Taskbar.getTaskbar();
-
                 try {
-                        // Set icon for mac os (and other systems which do support this method)
                         taskbar.setIconImage(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
                 } catch (final UnsupportedOperationException e) {
                         System.out.println("The os does not support: 'taskbar.setIconImage'");
@@ -61,20 +71,12 @@ public class SudokuGUI {
                         System.out.println("There was a security exception for: 'taskbar.setIconImage'");
                 }
 
-
-                corrFrame = new JFrame("Answer Board");
-                corrFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                corrFrame.setSize(500, 500);
-                corrFrame.setLayout(new BorderLayout());
-
-                printSudoku(corrBoard);
-
-                // Create a label to display the timer
+                // Display the timer in the main window
                 timerLabel = new JLabel("", SwingConstants.CENTER);
                 timerLabel.setFont(new Font("Arial", Font.PLAIN, 20));
                 mainFrame.add(timerLabel, BorderLayout.NORTH);
 
-                // Button for the player to finish/submit the puzzle.
+                // Button for the player to submit the puzzle.
                 JButton subButton = new JButton("Finish");
                 subButton.addActionListener(new ActionListener() {
                         @Override
@@ -85,11 +87,6 @@ public class SudokuGUI {
                 });
                 mainFrame.add(subButton, BorderLayout.SOUTH);
 
-                JPanel boardPanel = new JPanel();
-                boardPanel.setLayout(new GridLayout(N, N));
-
-                JPanel corrBoardPanel = new JPanel();
-                corrBoardPanel.setLayout(new GridLayout(N, N));
 
                 // Create and add JLabels to represent Sudoku cells
                 for (int i = 0; i < N; i++) {
@@ -114,7 +111,6 @@ public class SudokuGUI {
                                                 }
                                         });
                                 }
-
                                 boardPanel.add(cellLabels[i][j]);
                         }
                 }
@@ -135,6 +131,7 @@ public class SudokuGUI {
                         }
                 }
 
+                // Entering numbers into cells for both boards
                 mainFrame.add(boardPanel, BorderLayout.CENTER);
                 for (int i = 0; i < N; i++) {
                         for (int j = 0; j < N; j++) {
@@ -147,7 +144,7 @@ public class SudokuGUI {
                 corrFrame.add(corrBoardPanel, BorderLayout.CENTER);
                 for (int i = 0; i < N; i++) {
                         for (int j = 0; j < N; j++) {
-                                        corrCellLabels[i][j].setText(String.valueOf(corrBoard[i][j]));
+                                corrCellLabels[i][j].setText(String.valueOf(corrBoard[i][j]));
 
                         }
                 }
@@ -196,6 +193,7 @@ public class SudokuGUI {
                         }
                 }, 0, 1000); // Start the timer with a delay of 0 milliseconds and update every 1000 milliseconds (1 second)
         }
+
         private void updateTimerDisplay() {
                 // Convert elapsed time to seconds and minutes for display
                 long seconds = elapsedTime / 1000;
@@ -206,6 +204,7 @@ public class SudokuGUI {
                 String timerText = String.format("%02d:%02d", minutes, seconds);
                 timerLabel.setText("Time: " + timerText);
         }
+
         public void stopTimer() {
                 if (timer != null) {
                         timer.cancel();
@@ -218,35 +217,23 @@ public class SudokuGUI {
 
                 for (int i = 0; i < N; i++) {
                         for (int j = 0; j < N; j++) {
-                            if (!(board[i][j] == corrBoard[i][j])) {
-                                isCorrect = false;
-                                break;
-                            }
+                                if (!(board[i][j] == corrBoard[i][j])) {
+                                        isCorrect = false;
+                                        break;
+                                }
                         }
                 }
 
                 if (isCorrect) {
-                JOptionPane.showMessageDialog(mainFrame, "Congratulations! Sudoku puzzle solved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                int retry = JOptionPane.showConfirmDialog(mainFrame, "There are errors in the solution. Would you like to keep trying?", "Error", JOptionPane.YES_NO_OPTION);
-                if (retry == JOptionPane.YES_OPTION) {
-                    // Continue trying: Start the timer again and update the board
-                    startTimer();
+                        JOptionPane.showMessageDialog(mainFrame, "Congratulations! Sudoku puzzle solved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                        int retry = JOptionPane.showConfirmDialog(mainFrame, "There are errors in the solution. Would you like to keep trying?", "Error", JOptionPane.YES_NO_OPTION);
+                        if (retry == JOptionPane.YES_OPTION) {
+                                // Continue trying: Start the timer again and update the board
+                                startTimer();
+                        } else {
+                                corrFrame.setVisible(true);
+                        }
                 }
-                else{
-                        corrFrame.setVisible(true);
-                }
-            }
         }
-
-
-        public static void printSudoku(int[][] bboard) {
-                for (int i = 0; i<9; i++)
-                {
-                        for (int j = 0; j<9; j++)
-                                System.out.print(bboard[i][j] + " ");
-                        System.out.println();
-                }
-                System.out.println();
-        }
-       }
+}

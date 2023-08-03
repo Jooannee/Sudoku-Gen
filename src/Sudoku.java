@@ -19,6 +19,7 @@ public class Sudoku {
 
         board = new int[N][N];
     }
+
     //Method to generate random numbers to fill cells with
     int randomGenerator(int num) {
         return (int) Math.floor((Math.random()*num+1));
@@ -134,23 +135,12 @@ public class Sudoku {
         }
     }
 
-    //Method to finally print the sudoku, a standard 2D array printing method
-    public static void printSudoku(int[][] bboard) {
-        for (int i = 0; i<9; i++)
-        {
-            for (int j = 0; j<9; j++)
-                System.out.print(bboard[i][j] + " ");
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     // Driver
     public static void main(String[] args) {
         //Setting variables for Sudoku board
         int N = 9, K = 0;
         PreGUI setPanel = new PreGUI();
-        String diff = setPanel.displayGUI();
+        String diff = setPanel.preSettings();
         switch (diff) {
             case "Easy" -> K = 15;
             case "Medium" -> K = 30;

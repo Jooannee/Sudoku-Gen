@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -12,8 +11,8 @@ public class PreGUI {
     private static CountDownLatch latch = new CountDownLatch(1);
 
 
-    public String displayGUI(){
-        // GUI Setup
+    public String preSettings(){
+        // Window Setup
         JFrame frame = new JFrame("Settings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 200);
