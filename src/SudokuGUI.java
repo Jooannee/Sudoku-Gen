@@ -9,7 +9,6 @@ import java.util.TimerTask;
 import java.util.ArrayList;
 
 
-
 public class SudokuGUI {
         private int[][] board;
         private int[][] corrBoard;
@@ -70,6 +69,25 @@ public class SudokuGUI {
                 } catch (final SecurityException e) {
                         System.out.println("There was a security exception for: 'taskbar.setIconImage'");
                 }
+
+
+                // Setting up Menubar
+                JMenuBar menuBar = new JMenuBar();
+                JMenu fileMenu = new JMenu("File");
+                menuBar.add(fileMenu);
+
+                JMenuItem expButton = new JMenuItem("Export Board");
+                expButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                Methods.exportBoard(board);
+                        }
+                });
+
+                JMenuItem prtButton = new JMenuItem("Print Board");
+
+                fileMenu.add(expButton);
+                fileMenu.add(prtButton);
 
                 // Display the timer in the main window
                 timerLabel = new JLabel("", SwingConstants.CENTER);
@@ -149,6 +167,7 @@ public class SudokuGUI {
                         }
                 }
                 mainFrame.setVisible(true);
+                mainFrame.setJMenuBar(menuBar);
                 startTimer();
         }
 
