@@ -9,7 +9,6 @@ import java.util.TimerTask;
 import java.util.ArrayList;
 
 
-
 public class SudokuGUI {
         private int[][] board;
         private int[][] corrBoard;
@@ -70,6 +69,44 @@ public class SudokuGUI {
                 } catch (final SecurityException e) {
                         System.out.println("There was a security exception for: 'taskbar.setIconImage'");
                 }
+
+
+                // Setting up Menubar & "File" Menu
+                JMenuBar menuBar = new JMenuBar();
+                JMenu fileMenu = new JMenu("File");
+                menuBar.add(fileMenu);
+
+                // Adding buttons to "File" Menu
+                JMenuItem expButton = new JMenuItem("Export Board");
+                expButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                FileMethods fm = new FileMethods(board, corrBoard);
+                                fm.exportBoard();
+                        }
+                });
+
+                JMenuItem prtButton = new JMenuItem("Print Board");
+                prtButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                FileMethods fm = new FileMethods(board, corrBoard);
+                                fm.printBoard();
+                        }
+                });
+
+                JMenuItem impButton = new JMenuItem("Import Board");
+                impButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                        }
+                });
+
+                fileMenu.add(expButton);
+                fileMenu.add(prtButton);
+                fileMenu.addSeparator();
+                fileMenu.add(impButton);
 
                 // Display the timer in the main window
                 timerLabel = new JLabel("", SwingConstants.CENTER);
@@ -149,6 +186,7 @@ public class SudokuGUI {
                         }
                 }
                 mainFrame.setVisible(true);
+                mainFrame.setJMenuBar(menuBar);
                 startTimer();
         }
 
@@ -182,7 +220,7 @@ public class SudokuGUI {
         }
 
 
-        // Timer Methods
+        // Timer FileMethods
         private void startTimer() {
                 timer = new Timer();
                 timer.scheduleAtFixedRate(new TimerTask() {
@@ -211,7 +249,7 @@ public class SudokuGUI {
                 }
         }
 
-        //Methods to check if the player's solution of the board is correct (Copied from Sudoku class)
+        //FileMethods to check if the player's solution of the board is correct based on answer board
         public void solutionCorrect() {
                 boolean isCorrect = true;
 
