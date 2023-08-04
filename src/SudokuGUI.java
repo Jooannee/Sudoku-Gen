@@ -80,7 +80,7 @@ public class SudokuGUI {
                 expButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                Methods.exportBoard(board);
+                                FileMethods.exportBoard(board, corrBoard);
                         }
                 });
 
@@ -201,7 +201,7 @@ public class SudokuGUI {
         }
 
 
-        // Timer Methods
+        // Timer FileMethods
         private void startTimer() {
                 timer = new Timer();
                 timer.scheduleAtFixedRate(new TimerTask() {
@@ -230,7 +230,7 @@ public class SudokuGUI {
                 }
         }
 
-        //Methods to check if the player's solution of the board is correct (Copied from Sudoku class)
+        //FileMethods to check if the player's solution of the board is correct based on answer board
         public void solutionCorrect() {
                 boolean isCorrect = true;
 

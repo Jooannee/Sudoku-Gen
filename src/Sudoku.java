@@ -25,7 +25,7 @@ public class Sudoku {
         return (int) Math.floor((Math.random()*num+1));
     }
 
-    //Methods to check that a number is allowed in a cell based on Box, Row & Column
+    //FileMethods to check that a number is allowed in a cell based on Box, Row & Column
     boolean allowedBox (int r, int c, int num) {
         for (int i = 0; i < SRN; i++) {
             for (int j = 0; j < SRN; j++) {
