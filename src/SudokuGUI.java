@@ -71,23 +71,42 @@ public class SudokuGUI {
                 }
 
 
-                // Setting up Menubar
+                // Setting up Menubar & "File" Menu
                 JMenuBar menuBar = new JMenuBar();
                 JMenu fileMenu = new JMenu("File");
                 menuBar.add(fileMenu);
 
+                // Adding buttons to "File" Menu
                 JMenuItem expButton = new JMenuItem("Export Board");
                 expButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                FileMethods.exportBoard(board, corrBoard);
+                                FileMethods fm = new FileMethods(board, corrBoard);
+                                fm.exportBoard();
                         }
                 });
 
                 JMenuItem prtButton = new JMenuItem("Print Board");
+                prtButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                FileMethods fm = new FileMethods(board, corrBoard);
+                                fm.printBoard();
+                        }
+                });
+
+                JMenuItem impButton = new JMenuItem("Import Board");
+                impButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                        }
+                });
 
                 fileMenu.add(expButton);
                 fileMenu.add(prtButton);
+                fileMenu.addSeparator();
+                fileMenu.add(impButton);
 
                 // Display the timer in the main window
                 timerLabel = new JLabel("", SwingConstants.CENTER);
