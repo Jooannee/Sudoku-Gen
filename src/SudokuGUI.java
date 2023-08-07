@@ -110,7 +110,14 @@ public class SudokuGUI {
                         }
                 });
                 JMenuItem newButton = new JMenuItem("New Board");
+                newButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                mainFrame.dispose();
 
+                                Sudoku.main(new String[]{});
+                        }
+                });
                 gameMenu.add(resButton);
                 gameMenu.add(newButton);
 
