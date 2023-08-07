@@ -1,42 +1,39 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.CountDownLatch;
-
 
 public class PreGUI {
-    private static final String[] difficulties = {"Easy", "Medium", "Hard", "Select Difficulty"};
-    private static String selectedDiff;
-    private static final CountDownLatch latch = new CountDownLatch(1);
+    private final String[] difficulties = {"Easy", "Medium", "Hard", "Select Difficulty"};
+    private String selectedDiff;
 
-
-    public String preSettings(){
-        // Window Setup
-        JFrame frame = new JFrame("Settings");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 200);
+    public String preSettings() {
+        // Create a JDialog to act as the PreGUI window
+        JDialog dialog = new JDialog((Frame) null, "Settings", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(500, 200);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Dropdown menu of difficulties
         JComboBox<String> diffDropdown = new JComboBox<>(difficulties);
         diffDropdown.setSelectedIndex(3);
 
-        // Button to end preGUI and enter game
+        // Button to end preGUI and enter the game
         JButton startButton = new JButton("Start");
         startButton.addActionListener(e -> {
             selectedDiff = (String) diffDropdown.getSelectedItem();
-            latch.countDown(); // Notify the latch that the button has been clicked
+            dialog.dispose(); // Close the dialog after the user clicks "Start"
         });
 
 
-        frame.add(diffDropdown, BorderLayout.NORTH);
-        frame.add(startButton, BorderLayout.SOUTH);
-        frame.setVisible(true);
+        dialog.add(diffDropdown);
+        dialog.add(startButton, BorderLayout.SOUTH);
 
-        try{
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        frame.dispose();
+
+        // Center the dialog on the screen
+        dialog.setLocationRelativeTo(null);
+
+        // Show the dialog and wait for the user to make a selection
+        dialog.setVisible(true);
+
         return selectedDiff;
     }
 }

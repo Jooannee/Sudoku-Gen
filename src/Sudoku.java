@@ -136,7 +136,8 @@ public class Sudoku {
     }
 
     // Driver
-    public static void main(String[] args) {
+    // Driver
+    public static void main(String[] Args) {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         //Setting variables for Sudoku board
         int N = 9, K = 0;
@@ -148,7 +149,9 @@ public class Sudoku {
             case "Hard" -> K = 40;
         }
 
-        //Initializing Sudoku board
+
+
+    //Initializing Sudoku board
         Sudoku sudoku = new Sudoku(N, K);
         sudoku.fillBoardDiag();
         sudoku.fillRemaining(0, sudoku.SRN);
@@ -161,10 +164,18 @@ public class Sudoku {
         }
         sudoku.removeDigits();
 
+        int[][] initBoard = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                initBoard[i][j] = sudoku.board[i][j];
+            }
+        }
+
         // Display the Sudoku board using GUI
         SwingUtilities.invokeLater(() -> {
-            SudokuGUI sudokuGUI = new SudokuGUI(sudoku.board, corrBoard);
+            SudokuGUI sudokuGUI = new SudokuGUI(sudoku.board, corrBoard, initBoard);
             sudokuGUI.displayGUI();
         });
     }
+
 }
