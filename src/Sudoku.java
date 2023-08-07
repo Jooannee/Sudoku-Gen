@@ -137,6 +137,7 @@ public class Sudoku {
 
     // Driver
     public static void main(String[] args) {
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
         //Setting variables for Sudoku board
         int N = 9, K = 0;
         PreGUI setPanel = new PreGUI();

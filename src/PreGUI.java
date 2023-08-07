@@ -1,14 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.CountDownLatch;
 
 
 public class PreGUI {
     private static final String[] difficulties = {"Easy", "Medium", "Hard", "Select Difficulty"};
     private static String selectedDiff;
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch latch = new CountDownLatch(1);
 
 
     public String preSettings(){
@@ -23,12 +21,9 @@ public class PreGUI {
 
         // Button to end preGUI and enter game
         JButton startButton = new JButton("Start");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selectedDiff = (String) diffDropdown.getSelectedItem();
-                latch.countDown(); // Notify the latch that the button has been clicked
-            }
+        startButton.addActionListener(e -> {
+            selectedDiff = (String) diffDropdown.getSelectedItem();
+            latch.countDown(); // Notify the latch that the button has been clicked
         });
 
 

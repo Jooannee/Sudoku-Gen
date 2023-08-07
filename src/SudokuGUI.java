@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
@@ -10,17 +8,17 @@ import java.util.ArrayList;
 
 
 public class SudokuGUI {
-        private int[][] board;
-        private int[][] corrBoard;
-        private int N;
-        private int SRN;
+        private final int[][] board;
+        private final int[][] corrBoard;
+        private final int N;
+        private final int SRN;
         private JFrame mainFrame;
         private JFrame corrFrame;
         private Timer timer;
         private long elapsedTime;
         private JLabel timerLabel;
-        private JLabel[][] cellLabels;
-        private JLabel[][] corrCellLabels;
+        private final JLabel[][] cellLabels;
+        private final JLabel[][] corrCellLabels;
 
         // Constructor
         SudokuGUI(int[][] board, int[][] corrBoard) {
@@ -55,15 +53,15 @@ public class SudokuGUI {
 
                 // Setting window icon & Dock icon (If supported)
                 ArrayList<Image> icons = new ArrayList<>();
-                icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
-                icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 64.png"));
-                icons.add(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 32.png"));
+                icons.add(Toolkit.getDefaultToolkit().getImage("src/Images/Icon 128.png"));
+                icons.add(Toolkit.getDefaultToolkit().getImage("src/Images/Icon 64.png"));
+                icons.add(Toolkit.getDefaultToolkit().getImage("src/Images/Icon 32.png"));
                 mainFrame.setIconImages(icons);
 
                 // Setting taskbar Icon for OS which support it
                 final Taskbar taskbar = Taskbar.getTaskbar();
                 try {
-                        taskbar.setIconImage(Toolkit.getDefaultToolkit().getImage("src/Icons/Icon 128.png"));
+                        taskbar.setIconImage(Toolkit.getDefaultToolkit().getImage("src/Images/Icon 128.png"));
                 } catch (final UnsupportedOperationException e) {
                         System.out.println("The os does not support: 'taskbar.setIconImage'");
                 } catch (final SecurityException e) {
@@ -78,30 +76,13 @@ public class SudokuGUI {
 
                 // Adding buttons to "File" Menu
                 JMenuItem expButton = new JMenuItem("Export Board");
-                expButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                FileMethods fm = new FileMethods(board, corrBoard);
-                                fm.exportBoard();
-                        }
+                expButton.addActionListener(e -> {
+                        FileMethods fm = new FileMethods(board, corrBoard);
+                        fm.exportBoard();
                 });
 
                 JMenuItem prtButton = new JMenuItem("Print Board");
-                prtButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                FileMethods fm = new FileMethods(board, corrBoard);
-                                fm.printBoard();
-                        }
-                });
-
                 JMenuItem impButton = new JMenuItem("Import Board");
-                impButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-
-                        }
-                });
 
                 fileMenu.add(expButton);
                 fileMenu.add(prtButton);
@@ -115,12 +96,9 @@ public class SudokuGUI {
 
                 // Button for the player to submit the puzzle.
                 JButton subButton = new JButton("Finish");
-                subButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                                stopTimer();
-                                solutionCorrect();
-                        }
+                subButton.addActionListener(e -> {
+                        stopTimer();
+                        solutionCorrect();
                 });
                 mainFrame.add(subButton, BorderLayout.SOUTH);
 
