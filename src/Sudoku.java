@@ -161,9 +161,16 @@ public class Sudoku {
         }
         sudoku.removeDigits();
 
+        int[][] initBoard = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                initBoard[i][j] = sudoku.board[i][j];
+            }
+        }
+
         // Display the Sudoku board using GUI
         SwingUtilities.invokeLater(() -> {
-            SudokuGUI sudokuGUI = new SudokuGUI(sudoku.board, corrBoard);
+            SudokuGUI sudokuGUI = new SudokuGUI(sudoku.board, corrBoard, initBoard);
             sudokuGUI.displayGUI();
         });
     }

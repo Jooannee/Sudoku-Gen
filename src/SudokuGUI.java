@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Timer;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 
 public class SudokuGUI {
         private final int[][] board;
+        private final int[][] initboard;
         private final int[][] corrBoard;
         private final int N;
         private final int SRN;
@@ -21,8 +24,9 @@ public class SudokuGUI {
         private final JLabel[][] corrCellLabels;
 
         // Constructor
-        SudokuGUI(int[][] board, int[][] corrBoard) {
+        SudokuGUI(int[][] board, int[][] corrBoard, int[][] initBoard) {
                 this.board = board;
+                this.initboard = initBoard;
                 this.corrBoard = corrBoard;
                 this.N = board.length;
                 this.SRN = (int) Math.sqrt(N);
@@ -72,14 +76,16 @@ public class SudokuGUI {
                 // Setting up Menubar & "File" Menu
                 JMenuBar menuBar = new JMenuBar();
                 JMenu fileMenu = new JMenu("File");
+                JMenu gameMenu = new JMenu("Game");
                 menuBar.add(fileMenu);
+                menuBar.add(gameMenu);
 
                 // Adding buttons to "File" Menu
                 JMenuItem expButton = new JMenuItem("Export Board");
                 expButton.addActionListener(e -> {
-                        FileMethods fm = new FileMethods(board, corrBoard);
-                        fm.exportBoard();
-                });
+                                FileMethods fm = new FileMethods(board, corrBoard);
+                                fm.exportBoard();
+                        });
 
                 JMenuItem prtButton = new JMenuItem("Print Board");
                 JMenuItem impButton = new JMenuItem("Import Board");
@@ -88,6 +94,25 @@ public class SudokuGUI {
                 fileMenu.add(prtButton);
                 fileMenu.addSeparator();
                 fileMenu.add(impButton);
+
+                //Adding buttons to "Game" Menu
+                JMenuItem resButton = new JMenuItem("Reset Board");
+                resButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                for (int i = 0; i < N; i++) {
+                                        for (int j = 0; j < N; j++) {
+                                                board[i][j] = initboard[i][j];
+                                                updateCellLabel(i,j);
+                                        }
+                                }
+                                JOptionPane.showMessageDialog(null, "Successfully reset board, have fun!");
+                        }
+                });
+                JMenuItem newButton = new JMenuItem("New Board");
+
+                gameMenu.add(resButton);
+                gameMenu.add(newButton);
 
                 // Display the timer in the main window
                 timerLabel = new JLabel("", SwingConstants.CENTER);
